@@ -1,9 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tile Map Editor</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- defer ensures the script runs after parsing the DOM -->
+  <script src="script.js" defer></script>
+</head>
+<body>
 <div class="card">
-   
    <header>
       <h1>Tile Map Editor</h1>
       <div>
-<button class="button-as-link" onclick="clearCanvas()">Clear Canvas</button>
+         <button class="button-as-link" onclick="clearCanvas()">Clear Canvas</button>
          <button class="primary-button" onclick="exportImage()">Export Image</button>
       </div>
    </header>
@@ -11,14 +21,13 @@
       <aside>
          <label>Tiles</label>
          <div class="tileset-container">
-            <img id="tileset-source" crossorigin />
+            <img id="tileset-source" crossorigin="anonymous" alt="tileset" />
             <div class="tileset-container_selection"></div>
          </div>
       </aside>
       <div class="card_right-column">
          <!-- The main canvas -->
-         <canvas width="480" height="480">
-         </canvas>
+         <canvas width="480" height="480"></canvas>
          <p class="instructions">
             <strong>Click</strong> to paint.
             <strong>Shift+Click</strong> to remove.
@@ -35,3 +44,5 @@
       </div>
    </div>
 </div>
+</body>
+</html>
