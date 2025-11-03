@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tile Map Editor</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- defer ensures the script runs after parsing the DOM -->
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -26,13 +25,11 @@
          </div>
       </aside>
       <div class="card_right-column">
-         <!-- The main canvas -->
          <canvas width="480" height="480"></canvas>
          <p class="instructions">
             <strong>Click</strong> to paint.
             <strong>Shift+Click</strong> to remove.
          </p>
-         <!-- UI for layers -->
          <div>
             <label>Editing Layer:</label>
             <ul class="layers">
