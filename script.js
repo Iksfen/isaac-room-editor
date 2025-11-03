@@ -129,5 +129,5 @@ tilesetImage.onload = function() {
    draw();
    setLayer(0);
 }
-tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png";
+tilesetImage.src = "TileEditorSpritesheet.2x_2.png";
 
