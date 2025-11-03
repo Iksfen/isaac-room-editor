@@ -120,4 +120,4 @@ tilesetImage.onload = function() {
 
 // --- Load tileset image (raw GitHub URL) ---
 tilesetImage.crossOrigin = "anonymous";
-tilesetImage.src = "https://raw.githubusercontent.com/Iksfen/isaac-room-editor/main/images/TileEditorSpritesheet.2x_2.png";
+tilesetImage.src = "images/TileEditorSpritesheet.2x_2.png";
