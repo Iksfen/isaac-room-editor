@@ -129,5 +129,5 @@ tilesetImage.onload = function() {
    draw();
    setLayer(0);
 }
-tilesetImage.src = "https://github.com/Iksfen/isaac-room-editor/blob/main/images/TileEditorSpritesheet.2x_2.png";
+tilesetImage.src = "https://raw.githubusercontent.com/Iksfen/isaac-room-editor/main/images/TileEditorSpritesheet.2x_2.png";
 
