@@ -2,13 +2,13 @@
 var canvas = document.querySelector("canvas");
 var tilesetContainer = document.querySelector(".tileset-container");
 var tilesetSelection = document.querySelector(".tileset-container_selection");
-var tilesetImage = document.querySelector("#tileset-source");
+const testImage = new Image();
+testImage.src = "https://raw.githubusercontent.com/Iksfen/isaac-room-editor/dd7762e0398f649afcb59ab4150086fd256d5582/images/tileset.png";
 
 // --- State ---
 var selection = [0, 0]; // Which tile to paint from the tileset
 var isMouseDown = false;
-var currentLayer = 0;
-var layers = [{}, {}]; // Bottom, Top layers
+var rooms = [];
 
 // --- Select tile from the tileset ---
 tilesetContainer.addEventListener("mousedown", (event) => {
@@ -18,22 +18,14 @@ tilesetContainer.addEventListener("mousedown", (event) => {
 });
 
 // --- Add or remove tile ---
-function addTile(mouseEvent) {
-   var clicked = getCoords(mouseEvent);
-   var key = clicked[0] + "-" + clicked[1];
-
-   if (mouseEvent.shiftKey) {
-      delete layers[currentLayer][key];
-   } else {
-      layers[currentLayer][key] = [selection[0], selection[1]];
-   }
-   draw();
-}
+//function addTile(mouseEvent) {
+//   draw();
+//}
 
 // --- Mouse bindings for canvas ---
 canvas.addEventListener("mousedown", (event) => {
    isMouseDown = true;
-   addTile(event);
+   //addTile(event);
 });
 canvas.addEventListener("mouseup", () => {
    isMouseDown = false;
@@ -42,7 +34,7 @@ canvas.addEventListener("mouseleave", () => {
    isMouseDown = false;
 });
 canvas.addEventListener("mousemove", (event) => {
-   if (isMouseDown) addTile(event);
+   //if (isMouseDown) addTile(event);
 });
 
 // --- Get tile grid coordinates from mouse click ---
@@ -65,17 +57,17 @@ function exportImage() {
 
 // --- Clear canvas and reset layers ---
 function clearCanvas() {
-   layers = [{}, {}];
+   rooms = [];
    draw();
 }
 
-// --- Switch editing layer ---
-function setLayer(newLayer) {
-   currentLayer = newLayer;
-
-   var oldActiveLayer = document.querySelector(".layer.active");
-   if (oldActiveLayer) oldActiveLayer.classList.remove("active");
-   document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
+function isIn(arr, arr_of_arrs) {
+   for (let i = 0; i < arr_of_arrs.length; i++) {
+      if (JSON.stringify(arr) == JSON.stringify(arr_of_arrs[i])) {
+         return true;
+      }
+   }
+   return false;
 }
 
 // --- Draw all layers ---
@@ -84,39 +76,47 @@ function draw() {
    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
    var size = 32;
-   layers.forEach((layer) => {
-      Object.keys(layer).forEach((key) => {
-         var [x, y] = key.split("-").map(Number);
-         var [srcX, srcY] = layer[key];
-
-         ctx.drawImage(
-            tilesetImage,
-            srcX * size,
-            srcY * size,
+   rooms.forEach((room) => {
+      room.tiles.forEach((tile) => {
+        var offset = [0,0,0,0];
+        var dPoz = [[0,1],[-1,0],[0,-1],[1,0]];
+        for (let i = 0; i < 4; i++) {
+           var look_at = [tile[0]+dPoz[i][0],tile[1]+dPoz[i][1]];
+           if (isIn(look_at,room.tiles)) {
+              offset[i] = 1;
+           }
+        };
+        var offsets_offset = 0;
+        for (let i = 0; i < 4; i++) {
+           offsets_offset *= 2;
+           if (offset[i] == 1 && offset[(i+3) % 4] == 1) {
+              var diagonal = [tile[0]+dPoz[i][0]+dPoz[(i+3) % 4][0],tile[1]+dPoz[i][1]+dPoz[(i+3) % 4][1]];
+              if (isIn(diagonal,room.tiles)) {
+                 offsets_offset += 1;
+              }
+           }
+        };
+        offset = offset[3] + 2 * (offset[2] + 2 * (offset[1] + 2 * offset[0]));
+        ctx.drawImage(
+            testImage,
+            offsets_offset * size,
+            offset * size,
             size,
             size,
-            x * size,
-            y * size,
+            tile[0] * size,
+            tile[1] * size,
             size,
             size
-         );
+        );
       });
    });
 }
 
 // --- Default map state ---
-var defaultState = [
-   {"0-4":[3,2],"1-4":[4,2],"2-4":[4,2],"3-4":[4,2],"4-4":[4,1],"5-5":[4,2],"6-5":[4,2],"7-5":[4,2],"8-5":[4,2],"9-5":[4,2],"10-5":[4,2],"11-6":[3,2],"12-6":[4,2],"13-6":[4,2],"14-6":[4,2],"12-5":[4,1],"5-4":[4,1],"3-3":[4,1],"0-3":[4,1],"1-3":[4,1],"4-3":[4,1],"5-3":[4,1],"7-3":[4,1],"8-3":[4,1],"9-3":[4,1],"10-3":[4,1],"10-4":[4,1],"11-4":[4,1],"11-5":[4,1],"4-5":[3,2],"2-3":[4,1],"6-3":[4,1],"11-3":[4,1],"12-3":[4,1],"13-3":[4,1],"14-3":[4,1],"6-4":[4,1],"7-4":[4,1],"8-4":[4,1],"9-4":[4,1],"12-4":[4,1],"13-4":[4,1],"14-4":[4,1],"13-5":[4,1],"14-5":[4,1],"14-2":[4,1],"13-2":[4,1],"12-2":[4,1],"11-2":[4,1],"10-2":[4,1],"9-2":[4,1],"8-2":[4,1],"7-2":[4,1],"6-2":[4,1],"5-2":[4,1],"4-2":[4,1],"3-2":[4,1],"2-2":[4,1],"1-2":[4,1],"0-2":[4,1],"0-1":[4,1],"1-1":[4,1],"2-1":[4,1],"3-1":[4,1],"4-1":[4,1],"6-1":[4,1],"8-1":[4,1],"9-1":[4,1],"10-1":[4,1],"11-1":[4,1],"12-1":[4,1],"13-1":[4,1],"14-1":[4,1],"7-1":[4,1],"5-1":[4,1],"0-0":[4,1],"1-0":[4,1],"2-0":[4,1],"3-0":[4,1],"4-0":[4,1],"5-0":[4,1],"6-0":[4,1],"7-0":[4,1],"8-0":[4,1],"9-0":[4,1],"10-0":[4,1],"11-0":[4,1],"12-0":[4,1],"13-0":[4,1],"14-0":[4,1],"14-14":[2,6],"7-14":[3,6],"6-14":[2,6],"5-14":[3,6],"4-13":[3,6],"3-13":[2,6],"1-11":[2,10],"1-10":[2,10],"0-8":[0,6],"0-10":[2,10],"3-10":[3,6],"4-10":[2,6],"0-5":[3,6],"0-6":[0,6],"0-7":[1,6],"0-9":[1,6],"0-11":[2,10],"0-12":[2,10],"0-13":[2,10],"0-14":[0,6],"1-14":[1,6],"1-13":[2,10],"1-12":[3,6],"1-9":[2,6],"1-8":[1,6],"1-7":[0,6],"1-6":[3,6],"1-5":[2,6],"2-5":[3,6],"2-6":[2,6],"2-7":[3,6],"2-8":[0,6],"2-9":[3,6],"2-13":[2,10],"2-14":[0,6],"3-14":[1,6],"3-12":[3,6],"3-11":[2,6],"3-9":[2,6],"3-8":[3,6],"3-7":[2,6],"3-6":[3,6],"3-5":[2,6],"4-6":[2,6],"4-7":[3,6],"4-8":[2,6],"4-9":[3,6],"4-11":[3,6],"4-12":[2,6],"4-14":[2,6],"5-13":[2,6],"5-12":[4,10],"5-11":[4,10],"5-10":[4,10],"5-9":[4,10],"5-8":[3,6],"5-7":[2,6],"5-6":[3,6],"6-6":[2,6],"6-7":[3,6],"6-8":[2,6],"6-9":[4,10],"6-10":[4,10],"6-11":[4,10],"6-12":[4,10],"6-13":[3,6],"7-13":[2,6],"7-12":[4,10],"7-10":[4,10],"7-9":[4,10],"7-8":[3,6],"7-7":[2,6],"7-6":[3,6],"8-6":[2,6],"8-7":[3,6],"8-10":[4,10],"8-11":[4,10],"8-12":[4,10],"8-14":[2,6],"8-13":[3,6],"9-14":[3,6],"9-13":[2,6],"9-12":[4,10],"9-11":[4,10],"9-10":[4,10],"9-7":[2,6],"9-6":[3,6],"10-7":[3,6],"10-8":[2,6],"10-9":[3,6],"10-10":[2,6],"10-11":[3,6],"10-12":[2,6],"10-13":[3,6],"10-14":[2,6],"10-6":[2,6],"11-7":[2,6],"12-7":[3,6],"13-7":[2,6],"14-7":[2,6],"14-8":[2,6],"14-9":[3,6],"14-10":[4,3],"14-11":[4,4],"14-12":[2,6],"14-13":[3,6],"13-14":[3,6],"12-14":[2,6],"11-14":[3,6],"11-13":[2,6],"12-13":[3,6],"13-13":[2,6],"13-12":[3,6],"12-12":[2,6],"11-12":[3,6],"11-11":[2,6],"12-11":[3,6],"13-11":[4,4],"13-10":[2,6],"12-10":[2,6],"11-10":[3,6],"12-9":[3,6],"13-9":[2,6],"13-8":[3,6],"12-8":[2,6],"11-9":[2,6],"11-8":[3,6],"2-10":[2,10],"2-11":[2,10],"2-12":[2,10],"8-9":[4,10],"8-8":[4,10],"9-9":[4,10],"9-8":[4,10],"7-11":[4,10]},
-   {"0-5":[4,12],"1-5":[4,12],"2-5":[4,12],"3-5":[4,12],"4-6":[4,12],"5-6":[4,12],"6-6":[4,12],"7-6":[4,12],"8-6":[4,12],"9-6":[4,12],"10-6":[4,12],"11-7":[4,12],"12-7":[4,12],"13-7":[4,12],"14-7":[4,12],"0-9":[4,12],"1-9":[4,12],"2-9":[4,12],"11-14":[4,12],"12-14":[4,12],"13-14":[4,12],"14-14":[4,12],"6-2":[2,15],"6-3":[0,13],"7-3":[3,12],"8-3":[0,14],"9-3":[1,16],"10-3":[1,15],"11-3":[4,15],"4-2":[4,14],"5-2":[0,12],"4-1":[0,13],"3-1":[3,14],"1-1":[1,16],"2-1":[0,14],"11-1":[4,2],"12-1":[4,2],"13-1":[5,2],"11-0":[4,0],"12-0":[4,0],"13-0":[5,0],"10-1":[4,2],"9-1":[3,2],"10-0":[4,0],"9-0":[3,0],"9-2":[4,12],"10-2":[4,12],"11-2":[4,12],"12-2":[4,12],"13-2":[4,12],"5-13":[4,13],"9-13":[5,13],"6-13":[4,11],"7-13":[4,11],"8-13":[4,11],"0-14":[4,11],"1-14":[4,11],"2-14":[5,13]}
-];
+var defaultState = [{tiles:[[8,8]]},{tiles:[[8,7],[8,6],[7,7],[7,6]]},{tiles:[[9,8],[10,8]]},{tiles:[[9,6],[10,6],[10,5]]}];
 
 // --- Initialize once tileset is loaded ---
-tilesetImage.onload = function() {
-   layers = defaultState;
+testImage.onload = function() {
+   rooms = defaultState;
    draw();
-   setLayer(0);
 };
-
-// --- Load tileset image (raw GitHub URL) ---
-tilesetImage.crossOrigin = "anonymous";
-tilesetImage.src = "images/TileEditorSpritesheet.2x_2.png";
