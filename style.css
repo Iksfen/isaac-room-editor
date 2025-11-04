@@ -62,44 +62,6 @@ canvas {
   display: block;
 }
 
-/* tileset */
-.tileset-container {
-  position: relative;
-}
-.tileset-container_selection {
-  position: absolute;
-  outline: 3px solid cyan;
-  left: 0;
-  top: 0;
-  width: 32px;
-  height:32px;
-}
-
-/* layers list */
-.layers {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.layers button {
-  appearance: none;
-  font-family: inherit;
-  outline: 0;
-  background: transparent;
-  border: 0;
-  padding: 8px 0;
-  display: block;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-}
-
-.layers button.active {
-  font-weight: bold;
-  color: #0884f1;
-}
-
 .button-as-link {
   appearance: none;
   text-decoration: underline;
@@ -120,11 +82,4 @@ canvas {
   outline: 0;
   padding: 6px 16px;
   cursor: pointer;
-}
-
-label {
-  text-transform: uppercase;
-  margin-bottom: 0.5em;
-  font-weight: bold;
-  display: block;
 }
