@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,30 +8,26 @@
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
 </head>
+
 <body>
-<div class="card">
-   <header>
+  <div class="card">
+    <header>
       <h1>Tile Map Editor</h1>
       <div>
-         <button class="button-as-link" onclick="clearCanvas()">Clear Canvas</button>
-         <button class="primary-button" onclick="exportImage()">Export Image</button>
+        <button class="button-as-link" onclick="clearCanvas()">Clear Canvas</button>
+        <button class="primary-button" onclick="exportImage()">Export Image</button>
       </div>
-   </header>
-   <div class="card_body">
-      <aside>
-         <label>Tiles</label>
-         <div class="tileset-container">
-            <img id="tileset-source" crossorigin="anonymous" alt="tileset" />
-         </div>
-      </aside>
+    </header>
+    <div class="card_body">
       <div class="card_right-column">
-         <canvas width="544" height="544"></canvas>
-         <p class="instructions">
-            <strong>Click</strong> to paint.
-            <strong>Shift+Click</strong> to remove.
-         </p>
+        <canvas width="544" height="544"></canvas>
+        <p class="instructions">
+          <strong>Click</strong> to paint.
+          <strong>Shift+Click</strong> to remove.
+        </p>
       </div>
-   </div>
-</div>
+    </div>
+  </div>
 </body>
+
 </html>
