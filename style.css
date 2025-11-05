@@ -2,12 +2,14 @@
   box-sizing: border-box;
 }
 
-html { height: 100%; }
+html {
+  height: 100%;
+}
 
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   padding: 1em;
-  background: linear-gradient(180deg, #FFF9E4 0%, #EEEED8 100%);
+  background: linear-gradient(180deg, #fff9e4 0%, #eeeed8 100%);
   display: flex;
   justify-content: space-around;
   color: #2f2c48;
@@ -26,7 +28,6 @@ body {
   padding-bottom: 16px;
 }
 
-/* header inside .card */
 .card header {
   display: flex;
   justify-content: space-between;
@@ -40,26 +41,18 @@ body {
   margin: 0;
 }
 
-.card header .button-as-link {
-  margin-right: 1em;
-}
-
-.card aside {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
 .card_body {
   display: flex;
-}
-
-.card_right-column {
   padding-right: 16px;
+  padding-left: 16px;
 }
 
 canvas {
-  background: #f4f8f9;
   display: block;
+  background-color: #f4f8f9;
+  background-image: linear-gradient(to right, #aaa 2px, transparent 1px),
+    linear-gradient(to bottom, #aaa 2px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 .button-as-link {
@@ -70,6 +63,7 @@ canvas {
   border: 0;
   outline: 0;
   cursor: pointer;
+  margin-right: 1em;
 }
 
 .primary-button {
