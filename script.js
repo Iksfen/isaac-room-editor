@@ -2,7 +2,7 @@
 var canvas = document.querySelector("canvas");
 const testImage = new Image();
 testImage.src =
-  "https://raw.githubusercontent.com/Iksfen/isaac-room-editor/dd7762e0398f649afcb59ab4150086fd256d5582/images/tileset.png";
+  "images/tileset.png";
 
 var isMouseDown = false;
 var rooms = [];
